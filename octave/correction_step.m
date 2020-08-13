@@ -30,15 +30,17 @@ for i = 1:m
 	% Get the id of the landmark corresponding to the i-th observation
 	landmarkId = z(i).id;
 	% If the landmark is obeserved for the first time:
-	if(observedLandmarks(landmarkId)==false)
-		% TODO: Initialize its pose in mu based on the measurement and the current robot pose:
 
-        %update mean xy compontents of land marks
-	    mu(2*landmarkId + 2) = mu(1) + z(i).range*cos(mu(3) + z(i).bearing) 
-	    mu(2*landmarkId  + 3) = mu(2) + z(i).range*sin(mu(3) + z(i).bearing) 
+  if(observedLandmarks(landmarkId)==false)
+    % TODO: Initialize its pose in mu based on the measurement and the current robot pose:
+ 
+    angle =normalize_angle(mu(3) + z(i).bearing)
+    %update mean xy compontents of land marks
+	  mu(2*landmarkId + 2) = mu(1) + z(i).range*cos(angle) 
+	  mu(2*landmarkId  + 3) = mu(2) + z(i).range*sin(angle) 
 		% Indicate in the observedLandmarks vector that this landmark has been observed
 		observedLandmarks(landmarkId) = true;
-	endif
+  endif
 
 	% TODO: Add the landmark measurement to the Z vector
   Z(2*i - 1) =  z(i).range;
@@ -57,12 +59,13 @@ for i = 1:m
 
   expectedZ(2*i - 1) =  sqrt(q);
   expectedZ(2*i) =  atan2(d(2), d(1)) - mu(3);
+  expectedZ(2*i) =  normalize_angle(expectedZ(2*i));
 
 	% TODO: Compute the Jacobian Hi of the measurement function h for this observation
 
-  lowI = [ zeros(3,2); eye(2,2)]; 
+  lowI = [zeros(3,2); eye(2,2)]; 
 
-  F = [ eye(5,3)  zeros(5,2*i - 2)  lowI zeros(5, 2*N - 2*i)]; 
+  F = [ eye(5,3)  zeros(5,2*landmarkId - 2)  lowI zeros(5, 2*N - 2*landmarkId)]; 
   Hi_low = [ -sqrt(q)*d(1)  -sqrt(q)*d(2) 0 sqrt(q)*d(1)  sqrt(q)*d(2);
     d(2) -d(1) -q -d(2) d(1)]./q;
   Hi = Hi_low*F;
@@ -93,9 +96,6 @@ innov =  normalize_all_bearings(innov);
 % TODO: Finish the correction step by computing the new mu and sigma.
 % Normalize theta in the robot pose.
 
-
-
-innov
 %mu calc
 % 2N+3x1  + 2N+3x2m * 2mx1
 mu = mu + K*innov;

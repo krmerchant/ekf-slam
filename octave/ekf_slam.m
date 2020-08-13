@@ -51,13 +51,13 @@ showGui = true; % plot to files instead
 % Perform filter update for each odometry-observation pair read from the
 % data file.
 %for t = 1:size(data.timestep, 2)
-for t = 1:80
+for t = 1:160
 
     % Perform the prediction step of the EKF
     [mu, sigma] = prediction_step(mu, sigma, data.timestep(t).odometry);
 
     % Perform the correction step of the EKF
-    [mu, sigma, observedLandmarks] = correction_step(mu, sigma, data.timestep(t).sensor, observedLandmarks);
+   [mu, sigma, observedLandmarks] = correction_step(mu, sigma, data.timestep(t).sensor, observedLandmarks);
 
     %Generate visualization plots of the current state of the filter
     plot_state(mu, sigma, landmarks, t, observedLandmarks, data.timestep(t).sensor, showGui);

@@ -24,7 +24,6 @@ Gx_dtheta = [-u.t*sin(mu(3)  + u.r1);
             u.t*cos(mu(3) +  u.r1); 
             0];
 G_x = [zeros(3,2) Gx_dtheta];
-size(G_x);
 % TODO: Construct the full Jacobian G
 G = eye(2*N+3) + F'*G_x*F; %DxD + Dx3*3x3*3X
 
