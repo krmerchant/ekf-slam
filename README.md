@@ -8,4 +8,4 @@ This is one (of many) project from the University of Bonn Robot Mapping course t
 * Estimates of landmark and robot positions, with assumed data correspondences
 
 
-<img src="images/ekf_slam.gif" width="200" height="200" />
+<img src="images/ekf_slam.gif" width="700" height="400" />
