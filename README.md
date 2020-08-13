@@ -7,3 +7,5 @@ This is one (of many) project from the University of Bonn Robot Mapping course t
 * Implementation of range-bearing sensor model
 * Estimates of landmark and robot positions, with assumed data correspondences
 
+
+<img src="images/ekf_slam.gif" width="40" height="40" />
